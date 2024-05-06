@@ -35,7 +35,7 @@ from datetime import datetime
 import argparse
 
 class Settings(BaseSettings):
-    kafka_bootstrap_servers: str = 'kafka:9092'  # Kafka server address
+    kafka_bootstrap_servers: str = 'localhost:9092'  # Kafka server address
     commands_topic: str = 'kafka_commands'      # Kafka topic to publish messages
     poll_interval: float = 0.1                  # Polling interval in seconds for Kafka producer
 

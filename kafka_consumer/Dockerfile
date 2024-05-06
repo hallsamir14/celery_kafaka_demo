@@ -10,5 +10,5 @@ COPY kafka_consumer/ .
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the bot when the container launches
-CMD ["python", "main.py"]
+# Run consuemr when the container launches
+CMD ["python", "consumer.py"]

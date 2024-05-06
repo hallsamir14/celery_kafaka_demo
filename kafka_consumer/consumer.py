@@ -29,7 +29,7 @@ import signal
 import sys
 
 class Settings(BaseSettings):
-    kafka_bootstrap_servers: str = 'kafka:9092'
+    kafka_bootstrap_servers: str = 'localhost:9092' #kafka:9092 when dockerized
     commands_topic: str = 'kafka_commands'
     consumer_group: str = 'my_consumer_group'
     auto_offset_reset: str = 'earliest'  # Can be set to 'latest' or 'earliest'

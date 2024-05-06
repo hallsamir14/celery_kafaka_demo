@@ -32,7 +32,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092 
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_NUM_PARTITIONS: 3
       KAFKA_DEFAULT_REPLICATION_FACTOR: 1
@@ -45,105 +45,56 @@ services:
       timeout: 10s
       retries: 5
 
-  minio:
-    image: minio/minio
-    container_name: minio
-    networks:
-      - kafka_network
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - minio_data:/data
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    command: server /data --console-address ":9001"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9001"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
+#  minio:
+#    image: minio/minio
+#    container_name: minio
+#    networks:
+#      - kafka_network
+#    ports:
+#      - "9000:9000"
+#      - "9001:9001"
+#    volumes:
+#      - minio_data:/data
+#    environment:
+#      MINIO_ROOT_USER: minioadmin
+#      MINIO_ROOT_PASSWORD: minioadmin
+#    command: server /data --console-address ":9001"
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:9001"]
+#      interval: 30s
+#      timeout: 20s
+#      retries: 3
 
-  kafka_consumer:
-    build:
-      context: .
-      dockerfile: kafka_consumer/Dockerfile
-    container_name: kafka_consumer
-    networks:
-      - kafka_network
-    depends_on:
-      - kafka
-      - minio
-      - kafka_producer
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KAFKA_TOPIC: kafka_commands
+#  kafka_consumer:
+#    build:
+#      context: .
+#      dockerfile: kafka_consumer/Dockerfile
+#      network: host
+#    container_name: kafka_consumer
+#    networks:
+#      - kafka_network
+#    depends_on:
+#      - kafka
+#      - minio
+#      - kafka_producer
+#    environment:
+#      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+#      KAFKA_TOPIC: kafka_commands
 
-  kafka_producer:
-    build:
-      context: .
-      dockerfile: kafka_producer/Dockerfile
-    container_name: kafka_producer
-    networks:
-      - kafka_network
-    depends_on:
-      - kafka
-      - minio
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KAFKA_TOPIC: kafka_commands
+#  kafka_producer:
+#    build:
+#      context: .
+#      dockerfile: kafka_producer/Dockerfile
+#      network: host
+#    container_name: kafka_producer
+#    networks:
+#      - kafka_network
+#    depends_on:
+#      - kafka
+#      - minio
+#    environment:
+#      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+#      KAFKA_TOPIC: kafka_commands
 
-  discord_speak_consumer:
-    build:
-      context: .
-      dockerfile: discord_speak_consumer/Dockerfile
-    container_name: discord_speak_consumer
-    networks:
-      - kafka_network
-    depends_on:
-      - kafka
-      - minio
-      - kafka_producer
-
-  discord_listen_producer:
-    build:
-      context: .
-      dockerfile: discord_listen_producer/Dockerfile
-    container_name: discord_listen_producer
-    networks:
-      - kafka_network
-    depends_on:
-      - kafka
-      - minio
-      - kafka_producer
-
-  github_producer:
-    build:
-      context: .
-      dockerfile: github_producer/Dockerfile
-    container_name: github_producer
-    networks:
-      - kafka_network
-    depends_on:
-      - kafka
-      - redis
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KAFKA_COMMITS_TOPIC: github_commits
-      KAFKA_REPOSITORIES_TOPIC: github_repositories
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-
-  redis:
-    image: redis:latest
-    container_name: redis
-    networks:
-      - kafka_network
-    ports:
-      - "6379:6379"
-    command: redis-server --requirepass ${REDIS_PASSWORD}
-
-volumes:
-  minio_data:
+#volumes:
+#  minio_data:
