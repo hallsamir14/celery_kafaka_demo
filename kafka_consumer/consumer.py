@@ -19,6 +19,9 @@ Usage:
 - It requires configuration settings such as Kafka bootstrap servers, topic name, and consumer group to be set in an `.env` file.
 
 """
+import sys
+sys.path.append("/home/hallwork/webApps") #path to the celery_kafaka_demo folder- (Could use .env file to set this path)
+
 
 import json
 import logging
@@ -27,6 +30,9 @@ from confluent_kafka import Consumer, KafkaError
 from pydantic_settings import BaseSettings
 import signal
 import sys
+from celery_kafaka_demo.tasks.task0 import printSomething
+
+# Load settings from an external `.env` file for better maintainability
 
 class Settings(BaseSettings):
     kafka_bootstrap_servers: str = 'localhost:9092' #kafka:9092 when dockerized
@@ -81,6 +87,7 @@ def consume_messages():
             else:
                 # Process the valid message
                 message = msg.value().decode('utf-8')
+                printSomething("this is celery here") #output from celery task
                 process_message(json.loads(message))
     except Exception as e:
         logger.error(f"An unexpected exception occurred: {e}")
