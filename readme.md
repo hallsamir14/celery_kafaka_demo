@@ -44,45 +44,22 @@ A Python script that continuously listens for messages on a specified Kafka topi
 - Initializes a Kafka consumer with specified settings, subscribes to a topic, and listens for new messages.
 - Upon receiving a message, checks for errors, processes valid messages, and logs information.
 
-### 3. Discord Listener Producer
 
-A Discord bot that listens to all messages sent in specified channels, formats them, and forwards them to a Kafka topic. This allows external processing of Discord messages and acts as a bridge between Discord users and backend services.
-
-**Functionality**:
-- Listens to real-time messages in Discord.
-- Filters and formats messages before sending them to Kafka.
-- Utilizes environment variables for configuration to maintain security and flexibility.
-
-### 4. Discord Speak Consumer
-
-This Discord bot acts as a consumer for Kafka messages, taking data from Kafka and posting it directly into a Discord channel. It acts as the voice of the system, communicating processed results or alerts back to Discord.
 
 **Workflow**:
 - Subscribes to a Kafka topic and listens for messages.
-- Posts each received message to a designated Discord channel.
-- Provides real-time updates and interactions within the Discord environment.
+- Consumer reads messages from topic and output via celery task (printSomething())
+- Provides real-time stream of messages, using celery as mechansism for handling the display of messages.
 
 ## Setup and Configuration
 
 ### Requirements
 
 - Python 3.7+
-- Discord Bot Token
-- Kafka Cluster
+- Celery
+- Kafka Cluster (Via docker container in my case)
 
-### Installation
 
-1. **Install Dependencies**:
-pip install nextcord confluent_kafka pydantic_settings
-
-sql
-Copy code
-
-2. **Configuration Files**:
+**Configuration Files**:
 - Ensure all components are configured via `.env` files for environment-specific settings.
 - Logging configurations are managed through `logging_config.json` for each component.
-
-DISCORD_TOKEN=your_discord_bot_token_here
-KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-COMMANDS_TOPIC=your_kafka_topic_here
-ANNOUNCEMENT_CHANNEL_ID=your_discord_channel_id_here
