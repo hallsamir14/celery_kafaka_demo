@@ -71,6 +71,13 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
 
+
+def process_message(message):
+    """Log the processing of each message."""
+    logger.info(f"Processing message: {message}")
+    #printSomething("Its Celery") #test output from celery task
+    #printSomething(message) #test output from celery task with passed argument
+
 def consume_messages():
     """Continuously consume messages from Kafka and process them."""
     try:
@@ -87,18 +94,14 @@ def consume_messages():
             else:
                 # Process the valid message
                 message = msg.value().decode('utf-8')
-                printSomething("this is celery here") #output from celery task
                 process_message(json.loads(message))
     except Exception as e:
-        logger.error(f"An unexpected exception occurred: {e}")
+         logger.error(f"An unexpected exception occurred: {e}")
     finally:
         # Ensure the consumer is properly closed during an unexpected shutdown
         consumer.close()
         logger.info("Consumer closed")
 
-def process_message(message):
-    """Log the processing of each message."""
-    logger.info(f"Processing message: {message}")
 
 if __name__ == "__main__":
     consume_messages()

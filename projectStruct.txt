@@ -1,0 +1,26 @@
+/celery_kafaka_demo
+    __init__.py
+    celery.py
+    celeryconfig.py
+    /tasks
+        __init__.py
+        task1.py
+        task2.py
+        ...
+    /kafka_producer
+        __init__.py
+        producer.py  # Contains Kafka producer code
+        .env
+        logging_config.json
+        Dockerfile
+        .dockerignore
+        requirements.txt
+    /kafka_consumer
+        __init__.py
+        consumer.py  # Contains Kafka consumer code
+        .env
+        logging_config.json
+        Dockerfile
+        .dockerignore
+        requirements.txt
+... 

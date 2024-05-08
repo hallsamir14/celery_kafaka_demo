@@ -1,15 +1,21 @@
-# Kafka-Discord Integration System
+# Celery Integration With Kafka
 
-This system integrates Kafka with Discord, facilitating message transmission between a Kafka cluster and Discord channels through two distinct Python scripts: one acting as a producer and the other as a consumer. This setup is ideal for asynchronous processing and dissemination of information within a microservice architecture.
+This system integrates Celery and Kafka. This setup is ideal for asynchronous processing and dissemination of information within a microservice architecture.
 
-## Components
+## General Overview
 
-The system comprises four main components:
+Celery is a distributed task queue system that allows you to handle a large number of tasks concurrently. It provides an easy-to-use framework for task management, scheduling, and execution across multiple workers or nodes. By using Celery, you can delegate time-consuming or resource-intensive tasks to separate workers, enabling parallel processing and improving overall application performance.
 
-1. **Kafka Producer**: Sends messages to a Kafka topic.
-2. **Kafka Consumer**: Receives messages from a Kafka topic.
-3. **Discord Listener Producer**: Listens to messages from Discord and sends them to a Kafka topic.
-4. **Discord Speak Consumer**: Fetches messages from a Kafka topic and posts them to a Discord channel.
+Kafka, is a distributed streaming platform that provides a fault-tolerant and scalable messaging system. It excels at handling real-time data streams and facilitates reliable communication between various components of your application. Kafka offers high throughput, low latency, and strong durability, making it an ideal choice for building event-driven architectures.
+
+<h3><b>The system comprises of the following components:</b></h3>
+
+1. **Kafka Producer**: Writes messages to Kafka topic (Kafka broker).
+2. **Kafka Consumer**: Reads messages from Kafka (Kafka broker>).
+4. **Celery Tasks**: Instance of a specific funtion/job (task) that is executed by Celery.
+5. **Celery Worker**: Instance of a Celery app that is responsible for executing tasks.
+6. **Celery Beat**: Periodic task scheduler that executes tasks at a specified interval.
+
 
 ### 1. Kafka Producer
 
